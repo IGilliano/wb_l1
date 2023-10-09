@@ -29,7 +29,7 @@ func quicksort(nums []int) []int {
 }
 
 func main() {
-	nums := []int{15, 25, -55, 66, 865, -2}
+	nums := []int{15, 25, -55, 0, 66, 865, -2}
 	fmt.Println(quicksort(nums))
 	//На случай, если вопрос с подвохом:
 	sort.Ints(nums)

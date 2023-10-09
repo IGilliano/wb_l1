@@ -6,11 +6,11 @@ import "fmt"
 
 func main() {
 	input := []string{"cat", "cat", "dog", "cat", "tree"}
-	m := make(map[string]int)
+	m := make(map[string]struct{})
 	results := make([]string, 0)
 
 	for _, v := range input {
-		m[v]++
+		m[v] = struct{}{}
 	}
 
 	for k := range m {

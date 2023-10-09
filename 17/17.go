@@ -2,14 +2,22 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"sort"
 )
 
+//Реализовать бинарный поиск встроенными методами языка.
+
 func main() {
-	nums := []int{1, 56, 25, 233, 33, 44, 16, -6, -40}
+	nums := []int{1, 56, 25, 233, 33, 44, 16, -6, -40, 234}
 	sort.Ints(nums)
 	fmt.Println(nums)
-	x := 44 //Искомое число
+	var x int
+	fmt.Printf("What num you wonna search?\n")
+	_, err := fmt.Scan(&x)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 	result := binarySearch(nums, x)
 	if result == -1 {
 		fmt.Printf("Num %d is not found", x)

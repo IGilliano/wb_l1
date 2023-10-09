@@ -23,6 +23,7 @@ func (h Human) Introduce() {
 func main() {
 	artist := Action{Human{Name: "Vlad", Age: 42, Skill: "play Sting on guitar"}}
 	dancer := Action{Human{Name: "Lena", Age: 25, Skill: "dance pretty good"}}
+	fmt.Println(artist)
 
 	artist.Introduce()
 	dancer.Introduce()

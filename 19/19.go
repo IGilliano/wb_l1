@@ -1,11 +1,20 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+)
 
-/*Разработать программу, которая переворачивает подаваемую на ход строку (например: «главрыба — абырвалг»). Символы могут быть unicode.*/
+/*Разработать программу, которая переворачивает подаваемую на ход строку
+(например: «главрыба — абырвалг»). Символы могут быть unicode.*/
 
 func main() {
-	s := "главрыба"
+	var s string
+	fmt.Println("Input string\n")
+	_, err := fmt.Scan(&s)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 	fmt.Println(reverse(s))
 }
 

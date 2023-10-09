@@ -21,7 +21,7 @@ func sleep1(d time.Duration) {
 }
 
 func sleep2(d time.Duration) {
-	n := time.Now()
-	for time.Now().Before(n.Add(d)) {
+	n := time.Now().Add(d)
+	for time.Now().Before(n) {
 	}
 }

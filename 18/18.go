@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"sync"
 )
 
-/* Реализовать структуру-счетчик, которая будет инкрементироваться в конкурентной среде. По завершению программа должна выводить итоговое значение счетчика. */
+/* Реализовать структуру-счетчик, которая будет инкрементироваться в конкурентной среде.
+По завершению программа должна выводить итоговое значение счетчика. */
 
 type counter struct {
 	value int
@@ -15,38 +15,44 @@ type counter struct {
 }
 
 func main() {
-	c := counter{value: 0, mutex: sync.Mutex{}, ch: make(chan int, 1)}
+	c := &counter{value: 0, mutex: sync.Mutex{}, ch: make(chan int, 1)}
 	end := 50
 	wg := sync.WaitGroup{}
 
 	for i := 0; i < end; i++ {
 		wg.Add(1)
-		go increment(&c, &wg)
+		go func() {
+			defer wg.Done()
+			increment1(c)
+		}()
 	}
 	wg.Wait()
-	fmt.Fprintln(os.Stdout, c.value)
+	fmt.Println(c.value)
 
 	c.value = 0
 
 	for i := 0; i < end; i++ {
 		wg.Add(1)
-		go increment2(&c, &wg)
+		go func() {
+			defer wg.Done()
+			increment2(c)
+		}()
 	}
 	wg.Wait()
 	close(c.ch)
-	fmt.Fprintln(os.Stdout, c.value)
+	fmt.Println(c.value)
 }
 
-func increment(c *counter, wg *sync.WaitGroup) {
+func increment1(c *counter) {
 	c.mutex.Lock()
+	defer c.mutex.Unlock()
 	c.value++
-	c.mutex.Unlock()
-	wg.Done()
 }
 
-func increment2(c *counter, wg *sync.WaitGroup) {
+func increment2(c *counter) {
 	c.ch <- 1
+	defer func() {
+		<-c.ch
+	}()
 	c.value++
-	<-c.ch
-	wg.Done()
 }

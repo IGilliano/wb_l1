@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"sync"
 	"time"
 )
 
@@ -19,6 +20,7 @@ func main() {
 				return
 			default:
 				fmt.Println(i)
+				time.Sleep(1 * time.Second)
 			}
 		}
 	}()
@@ -50,14 +52,16 @@ func main() {
 	time.Sleep(5 * time.Second)
 
 	//Метод 3: Использовать контекст
-	quit3 := make(chan struct{})
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	wg := sync.WaitGroup{}
 
+	wg.Add(1)
 	go func(ctx context.Context) {
+		defer wg.Done()
 		for i := 0; ; i++ {
 			select {
 			case <-ctx.Done():
-				quit3 <- struct{}{}
 				return
 			default:
 				fmt.Println(i)
@@ -66,8 +70,7 @@ func main() {
 		}
 	}(ctx)
 
-	time.Sleep(5 * time.Second)
-	cancel()
+	wg.Wait()
 	fmt.Println("Is it done?")
 	time.Sleep(2 * time.Second)
 	fmt.Println("Yes, its done")

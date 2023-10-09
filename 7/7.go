@@ -18,13 +18,13 @@ func main() {
 	wg := sync.WaitGroup{}
 
 	for i := range values {
-		j := i
+		i := i
 		wg.Add(1)
 		go func() {
+			defer wg.Done()
 			test.mutex.Lock()
 			defer test.mutex.Unlock()
-			test.m[j] = values[j]
-			wg.Done()
+			test.m[i] = values[i]
 		}()
 	}
 	wg.Wait()

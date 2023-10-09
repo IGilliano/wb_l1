@@ -2,7 +2,8 @@ package main
 
 import "fmt"
 
-/* Разработать программу, которая в рантайме способна определить тип переменной: int, string, bool, channel из переменной типа interface{}.*/
+/* Разработать программу, которая в рантайме способна определить тип переменной:
+int, string, bool, channel из переменной типа interface{}.*/
 
 // 1 способ: использовать оператор switch:
 func identifyType1(x interface{}) {
@@ -17,6 +18,8 @@ func identifyType1(x interface{}) {
 		fmt.Printf("%q = rune!\n", x)
 	case bool:
 		fmt.Printf("%t = bool!\n", x)
+	case chan interface{}:
+		fmt.Printf("%c = chan!)\n", x)
 	}
 }
 
@@ -32,6 +35,7 @@ func main() {
 	input = append(input, 12.2)
 	input = append(input, '¿')
 	input = append(input, true)
+	input = append(input, make(chan int))
 
 	for _, v := range input {
 		identifyType1(v)
